@@ -46,15 +46,15 @@ spec:
       targetPort: 80 # container port
 ---
 apiVersion: networking.k8s.io/v1 
-kind: Ingress # ingress is used to expose multiple services using single load balancer
+kind: Ingress # ingress is used to expose multiple services using single load balancer, and at the time of executing the ingress it will checl all the details which we gave here and it will create the application load balancer to expose the services
 metadata:
   name: app1
-  annotations: # annotations are used to provide additional information to the ingress controller from outside k8 cluster
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+  annotations: # annotations are used to provide additional information to the ingress controller from outside k8 cluster because ingress controller is running outside k8 cluster
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]' # specifying the load balancer to listen on port 443 for https traffic
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:315069654700:certificate/806e53c3-3894-49ff-96c7-fbd7c3b753ff
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/group.name: joindevops
+    alb.ingress.kubernetes.io/scheme: internet-facing # making the load balancer internet facing
+    alb.ingress.kubernetes.io/target-type: ip # target type is ip because the aws load balancer controller will register the pod ip's directly with the load balancer  
+    alb.ingress.kubernetes.io/group.name: spandana # grouping multiple ingress under single load balancer
 spec:
   ingressClassName: alb # specifying the ingress class name to use the aws load balancer controller
   rules: # defining rules for routing traffic
@@ -71,3 +71,9 @@ spec:
 
               # ingress it will create the application load balancer to expose app1 service on port 443 using the specified ssl certificate
               # ingress it will create the loadblancer on behalf of k8 
+
+              # can you explain ingress here and why we are using the annonations here 
+              # Ingress is a Kubernetes resource that manages external access to services within a cluster, typically HTTP/HTTPS traffic.
+              # It provides routing rules to direct incoming requests to the appropriate backend services based on hostnames and paths.
+              # Annotations in an Ingress resource are key-value pairs that provide additional configuration options for the Ingress controller.
+              # In this case, the annotations are used to configure the AWS Application Load Balancer (ALB) settings, such as specifying the SSL certificate ARN for HTTPS, defining the load balancer scheme (internet-facing), and setting the target type to IP.
