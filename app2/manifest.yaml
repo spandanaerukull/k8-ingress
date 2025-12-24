@@ -30,7 +30,7 @@ spec:
         image: joindevops/app2:v1
 ---
 apiVersion: v1
-kind: Service
+kind: Service # exposing app2 deployment
 metadata:
   name: app2
   labels:
