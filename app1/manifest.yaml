@@ -49,7 +49,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress # ingress is used to expose multiple services using single load balancer
 metadata:
   name: app1
-  annotations:
+  annotations: # annotations are used to provide additional information to the ingress controller
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:315069654700:certificate/806e53c3-3894-49ff-96c7-fbd7c3b753ff
     alb.ingress.kubernetes.io/scheme: internet-facing
