@@ -45,27 +45,27 @@ spec:
       port: 80 # service port
       targetPort: 80 # container port
 ---
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1 
 kind: Ingress # ingress is used to expose multiple services using single load balancer
 metadata:
   name: app1
-  annotations: # annotations are used to provide additional information to the ingress controller
+  annotations: # annotations are used to provide additional information to the ingress controller from outside k8 cluster
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:315069654700:certificate/806e53c3-3894-49ff-96c7-fbd7c3b753ff
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.name: joindevops
 spec:
-  ingressClassName: alb
-  rules:
-  - host: "app1.daws84s.site"
+  ingressClassName: alb # specifying the ingress class name to use the aws load balancer controller
+  rules: # defining rules for routing traffic
+  - host: "app1.spandana.click" # domain name to access the application this is host based routing
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: app1
+      - pathType: Prefix # path type is prefix means any request starting with /
+        path: "/" # path to route traffic
+        backend: # backend service to route traffic
+          service: # backend service to route traffic
+            name: app1 # backend service name to route traffic
             port:
               number: 80 # app1 service port
 
